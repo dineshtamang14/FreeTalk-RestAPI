@@ -3,11 +3,13 @@ dotenv.config();
 import express, { NextFunction, Request, Response } from "express"
 import morgan from "morgan"
 import mongoose from "mongoose";
+import cors from "cors"
 
 const app = express()
 
 // middleware
 app.use(express.json());
+app.use(cors());
 app.use(morgan('dev'));
 
 // global interface
@@ -30,9 +32,9 @@ const start = async () => {
     try {
        await mongoose.connect(process.env.MONGO_URI);
     } catch(err){
+        console.log(err);
         throw err
     }
-    app.listen(5000, () => console.log("server is running on port 5000"))
 }
 
 start()
@@ -44,3 +46,5 @@ app.get("/", (req, res) => {
         isAdmin: true
     })
 })
+
+app.listen(5000, () => console.log("server is running on port 5000"))
