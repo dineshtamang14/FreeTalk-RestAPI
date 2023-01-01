@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
-import Comment from "src/models/comment";
-import Post from "src/models/post";
+import Comment from "../../models/comment";
+import Post from "../../models/post";
 
 const router = Router();
 
