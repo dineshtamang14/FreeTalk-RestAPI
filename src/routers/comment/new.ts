@@ -18,11 +18,11 @@ router.post("/api/comment/new/:postId", async (req: Request, res: Response, next
         content
     });
     await newComment.save();
-    const updatedPost = Post.findOneAndUpdate(
+    const updatedPost = await Post.findOneAndUpdate(
         { _id: postId },
         { $push: { comments: newComment } },
         { new: true }
-    )
+    ).populate('comments')
     res.status(201).send(updatedPost);
 });
 

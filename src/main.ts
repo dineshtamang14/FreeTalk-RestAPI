@@ -4,6 +4,7 @@ import express, { NextFunction, Request, Response } from "express"
 import morgan from "morgan"
 import mongoose from "mongoose";
 import cors from "cors"
+import cookieSession from "cookie-session";
 import { 
     newPostRouter, 
     showPostRouter, 
@@ -16,12 +17,17 @@ import {
 const app = express()
 
 // middleware
+app.set('trust proxy', true);
 app.use(cors({
     origin: "*",
     optionsSuccessStatus: 200
 }));
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(cookieSession({
+    signed: false,
+    secure: false
+}))
 
 // all the routers
 app.use(newPostRouter);
@@ -54,6 +60,7 @@ app.use((error: CustomError, req: Request, res: Response, next: NextFunction) =>
 
 const start = async () => {
     mongoose.set('strictQuery', true);
+    if(!process.env.JWT_KEY) throw new Error("jwt key is required"); 
     if(!process.env.MONGO_URI) throw new Error("MONGO_URI is required");    
     try {
        await mongoose.connect(process.env.MONGO_URI);
