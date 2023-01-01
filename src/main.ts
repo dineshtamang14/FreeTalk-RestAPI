@@ -18,7 +18,7 @@ import {
     signoutRouter,
     currentUserRouter
 } from "./routers/index"
-import { currentUser, requireAuth } from "../common";
+import { NotFoundError, currentUser, errorHandler, requireAuth } from "../common";
 
 const app = express()
 
@@ -57,24 +57,24 @@ app.use(requireAuth, deleteCommentRouter);
 
 // for unknow path
 app.use("*", (req: Request, res: Response, next: NextFunction) => {
-    const error = new Error("not found!") as CustomError;
-    error.status = 404;
-    next(error);
+    return next(new NotFoundError());
 })
 
 // global interface
-declare global {
-    interface CustomError extends Error {
-        status?: number
-    }
-}
+// declare global {
+//     interface CustomError extends Error {
+//         status?: number
+//     }
+// }
 
-app.use((error: CustomError, req: Request, res: Response, next: NextFunction) => {
-    if(error.status){
-        return res.status(error.status).json({ message: error.message })
-    }
-    return res.status(500).json({ message: "something went wrong!" })
-})
+// app.use((error: CustomError, req: Request, res: Response, next: NextFunction) => {
+//     if(error.status){
+//         return res.status(error.status).json({ message: error.message })
+//     }
+//     return res.status(500).json({ message: "something went wrong!" })
+// })
+
+app.use(errorHandler);
 
 const start = async () => {
     mongoose.set('strictQuery', true);
