@@ -16,8 +16,11 @@ import {
 const app = express()
 
 // middleware
+app.use(cors({
+    origin: "*",
+    optionsSuccessStatus: 200
+}));
 app.use(express.json());
-app.use(cors());
 app.use(morgan('dev'));
 
 // all the routers
