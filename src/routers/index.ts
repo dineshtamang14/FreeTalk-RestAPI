@@ -1,5 +1,6 @@
 export * from "./post/new"
 export * from "./post/show"
+export * from "./post/showAll"
 export * from "./post/update"
 export * from "./post/delete"
 

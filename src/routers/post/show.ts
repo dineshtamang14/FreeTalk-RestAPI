@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import Post from "../../models/post";
+import { BadRequestError } from "../../../common";
 
 const router = Router();
 
@@ -15,7 +16,7 @@ router.get("/api/post/show/:id", async (req: Request, res: Response, next: NextF
     try {
         post = await Post.findOne({ _id:id }).populate('comments');
     } catch (err) {
-        next(new Error("Post not found!"));
+        next(new BadRequestError("Post not found!"));
     }
     res.status(200).send(post);
 })

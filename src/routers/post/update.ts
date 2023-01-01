@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import Post from "../../models/post";
+import { BadRequestError } from "../../../common";
 
 const router = Router();
 
@@ -8,9 +9,7 @@ router.patch("/api/post/update/:id", async (req: Request, res: Response, next: N
     const { title, content } = req.body;
 
     if(!id){
-        const error = new Error("post id is required") as CustomError;
-        error.status = 404;
-        next(error);
+        return next(new BadRequestError("post id is required"));
     }
 
     let updatedPost;
@@ -18,9 +17,7 @@ router.patch("/api/post/update/:id", async (req: Request, res: Response, next: N
         updatedPost = await Post.findOneAndUpdate({ _id: id }, { $set: { title, content } }, 
             { new: true })
     } catch (err) {
-        const error = new Error("post cannot be updated!") as CustomError
-        error.status = 404;
-        next(error);
+        return next(new BadRequestError("post cannot be updated!"))
     }
 
     res.status(201).send(updatedPost);

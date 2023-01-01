@@ -8,6 +8,7 @@ import cookieSession from "cookie-session";
 import { 
     newPostRouter, 
     showPostRouter, 
+    showAllPostRouter,
     updatePostRouter, 
     deletePostRouter,
     newCommentRouter,
@@ -46,6 +47,7 @@ app.use(signoutRouter)
 // post routes
 app.use(requireAuth, newPostRouter);
 app.use(showPostRouter);
+app.use(showAllPostRouter);
 app.use(requireAuth, updatePostRouter);
 app.use(requireAuth, deletePostRouter);
 
