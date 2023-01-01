@@ -11,8 +11,13 @@ import {
     updatePostRouter, 
     deletePostRouter,
     newCommentRouter,
-    deleteCommentRouter
+    deleteCommentRouter,
+    signupRouter,
+    signinRouter,
+    signoutRouter,
+    currentUserRouter
 } from "./routers/index"
+import { currentUser, requireAuth } from "../common";
 
 const app = express()
 
@@ -30,12 +35,23 @@ app.use(cookieSession({
 }))
 
 // all the routers
-app.use(newPostRouter);
+app.use(currentUser)
+
+// auth routes
+app.use(signupRouter)
+app.use(signinRouter);
+app.use(currentUserRouter)
+app.use(signoutRouter)
+
+// post routes
+app.use(requireAuth, newPostRouter);
 app.use(showPostRouter);
-app.use(updatePostRouter);
-app.use(deletePostRouter);
-app.use(newCommentRouter);
-app.use(deleteCommentRouter);
+app.use(requireAuth, updatePostRouter);
+app.use(requireAuth, deletePostRouter);
+
+// comment routes
+app.use(requireAuth, newCommentRouter);
+app.use(requireAuth, deleteCommentRouter);
 
 // for unknow path
 app.use("*", (req: Request, res: Response, next: NextFunction) => {
