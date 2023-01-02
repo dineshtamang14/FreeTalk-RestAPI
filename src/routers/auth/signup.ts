@@ -11,7 +11,7 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
     const user = await User.findOne({ email });
     if(user) return next(new BadRequestError('user with that email already exists!'));
 
-    const newUser = new User({ email, password });
+    const newUser = User.build({ email, password });
     await newUser.save();
 
     req.session = {
