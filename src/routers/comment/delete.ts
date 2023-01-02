@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import Post from "../../models/post";
+import Post, { PostDoc } from "../../models/post";
 import Comment from "../../models/comment"
 import { BadRequestError } from "../../../common";
 
@@ -17,8 +17,9 @@ router.delete("/api/comment/:commentId/delete/:postId", async (req: Request, res
         next(new BadRequestError("comment cannot be deleted!"))
     }
 
-    await Post.findByIdAndUpdate({ _id: postId }, { $pull: { comments: commentId } })
-    res.status(201).json({ success: true })
+    const post: PostDoc | null = await Post.findByIdAndUpdate({ _id: postId }, { $pull: { comments: commentId } }, { new: true });
+    if(!post) return next(new Error());
+    res.status(201).send(post)
 })
 
 export { router as deleteCommentRouter }

@@ -1,6 +1,7 @@
 import { NextFunction, Router, Request, Response } from "express";
 import Post from "../../models/post";
 import { BadRequestError } from "../../../common";
+import User from "../../models/user";
 
 const router = Router()
 
@@ -11,12 +12,15 @@ router.post("/api/post/new", async (req: Request, res: Response, next: NextFunct
         return next(new BadRequestError("title and content are required!"))
     }
 
-    const newPost = new Post({
+    const newPost = Post.build({
         title,
         content
     });
 
     await newPost.save();
+    await User.findOneAndUpdate({ _id: req.currentUser!.userId },
+        { $push: { posts: newPost._id } }
+        )
     res.status(201).send(newPost);
 })
 

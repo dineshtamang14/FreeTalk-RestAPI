@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import Post from "../../models/post";
 import { BadRequestError } from "../../../common";
+import User, { UserDoc } from "../../models/user";
 
 const router = Router();
 
@@ -18,7 +19,11 @@ router.delete("/api/post/delete/:id", async (req: Request, res: Response, next: 
         next(new BadRequestError("post cannot be deleted"));
     }
 
-    res.status(201).json({ success: true })
+    const user: UserDoc | null = await User.findOneAndUpdate({ _id: req.currentUser!.userId}, 
+        { $pull: { posts: id } }, { new: true });
+
+    if(!user) return next(new Error());
+    res.status(201).send(user)
 })
 
 export { router as deletePostRouter }

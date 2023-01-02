@@ -12,7 +12,7 @@ router.post("/api/comment/new/:postId", async (req: Request, res: Response, next
         return next(new BadRequestError("conent is required!"));
     }
 
-    const newComment = new Comment({
+    const newComment = Comment.build({
         userName: userName ? userName : "anonymous",
         content
     });
