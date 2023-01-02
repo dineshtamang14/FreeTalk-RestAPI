@@ -1,7 +1,10 @@
 export * from "./src/services/authentication"
+
 export * from "./src/middlewares/currentUser"
 export * from "./src/middlewares/require-auth"
 export * from "./src/middlewares/error-handler"
+// Image upload router export
+export * from "./src/middlewares/upload-img"
 
 export * from "./src/errors/bad-request-error"
 export * from "./src/errors/database-connection-error"
