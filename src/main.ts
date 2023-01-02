@@ -16,7 +16,9 @@ import {
     signupRouter,
     signinRouter,
     signoutRouter,
-    currentUserRouter
+    currentUserRouter,
+    addImagesRouter,
+    deleteImagesRouter
 } from "./routers/index"
 import { NotFoundError, currentUser, errorHandler, requireAuth } from "../common";
 
@@ -50,6 +52,8 @@ app.use(showPostRouter);
 app.use(showAllPostRouter);
 app.use(requireAuth, updatePostRouter);
 app.use(requireAuth, deletePostRouter);
+app.use(requireAuth, addImagesRouter);
+app.use(requireAuth, deleteImagesRouter);
 
 // comment routes
 app.use(requireAuth, newCommentRouter);

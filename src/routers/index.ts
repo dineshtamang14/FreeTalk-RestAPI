@@ -3,6 +3,8 @@ export * from "./post/show"
 export * from "./post/showAll"
 export * from "./post/update"
 export * from "./post/delete"
+export * from "./post/add-images"
+export * from "./post/delete-images"
 
 export * from "./comment/new"
 export * from "./comment/delete"
