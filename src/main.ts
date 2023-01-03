@@ -94,4 +94,5 @@ const start = async () => {
 
 start()
 
-app.listen(8080, () => console.log("server is running on port 8080"))
+const port = 5000;
+app.listen(port, '0.0.0.0' , () => console.log(`server is listing on port ${port}`))
